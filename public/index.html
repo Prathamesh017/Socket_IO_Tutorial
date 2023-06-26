@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+</head>
+
+<body>
+  <p>Chatting</p>
+  <input type="text" placeholder="enter message" id="message">
+  <button id="send">Create Connect</button>
+  <div id="messages"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    const sendBtn = document.getElementById("send");
+    const message = document.getElementById("message");
+    const messages = document.getElementById("messages");
+
+    //this will trigger if there is message event done from server
+    socket.on("message", (message) => {
+      const p = document.createElement("p")
+      p.innerText = message;
+      messages.appendChild(p);
+      console.log("Message Recieved Back", message)
+    })
+    sendBtn.addEventListener("click", () => {
+      const messageInput = message.value;
+      console.log("Button Clicked", messageInput);
+      socket.emit("user-message", messageInput);
+      message.value = ""
+    })
+  </script>
+</body>
+
+</html>
